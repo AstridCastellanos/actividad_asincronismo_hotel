@@ -1,3 +1,8 @@
+let habitaciones = [];
+
+function tiempoDeEspera(ms) {
+  return new Promise((resolve, reject) => setTimeout(resolve, ms));
+}
 
 async function menu() {
     let opcion = prompt(
@@ -12,6 +17,7 @@ async function menu() {
  
     switch (opcion) {
       case "1":
+        
         break;
       case "2":
        
@@ -32,7 +38,28 @@ async function menu() {
         console.log("Opción no válida!");
     }
     menu();
-  }
+}
 
 
-  menu();
+menu();
+
+// Función para mostrar y almacenar las opciones multiples
+function subMenu(lista){
+    let opcion = prompt(
+        `1. ${lista[0]}\n` +
+        `2. ${lista[1]}\n` +
+        `3. ${lista[2]}\n`
+    );
+
+    switch (opcion) {
+        case "1":
+            return lista[0];
+        case "2":
+            return lista[1];
+        case "3":
+            return lista[2];
+        default:
+            console.log("Opción no válida!");
+            return subMenu(lista);
+    }
+}

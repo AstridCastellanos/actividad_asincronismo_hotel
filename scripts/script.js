@@ -1,4 +1,6 @@
 let habitaciones = [];
+let tipos = ["Sencilla","Doble","Suite"];
+let estados = ["Libre","Ocupada","Limpieza"];
 
 function tiempoDeEspera(ms) {
   return new Promise((resolve, reject) => setTimeout(resolve, ms));
@@ -26,7 +28,7 @@ async function menu() {
         await buscar();
         break;
       case "4":
-       
+       await actualizar();
         break;
       case "5":
 
@@ -63,9 +65,6 @@ function subMenu(lista){
 
 //Función para registrar nuevas habitaciones
 async function registrar() {
-    let tipos = ["Sencilla","Doble","Suite"];
-    let estados = ["Libre","Ocupada","Limpieza"];
-
 
     let numero = Number(prompt("Número de la habitación:"));
     let tipo = subMenu(tipos);
@@ -129,4 +128,24 @@ async function buscar() {
     console.log("Habitación no encontrada...");
   }
 }
+
+//Función para actualizar estado de una habitación
+async function actualizar() {
+  let numero = parseInt(prompt("Número de habitación a buscar:"));
+  console.log("Buscando en base de datos...");
+
+  await tiempoDeEspera(3000);
+
+  let habitacionBuscada = habitaciones.find((habitacion) => {
+    return habitacion.numero === numero;
+  });
+  if (habitacionBuscada) {
+    let nuevoEstado = prompt("Ingrese el nuevo estado:");
+    habitacionBuscada.estado = nuevoEstado;
+    console.log("Estado actualizado: " + habitacionBuscada.numero);
+  } else {
+    console.log("Habitación no encontrada...");
+  }
+}
+
 menu();

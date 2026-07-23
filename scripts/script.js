@@ -31,7 +31,7 @@ async function menu() {
        await actualizar();
         break;
       case "5":
-
+        eliminar();
         break;
       case "6":
         console.log("Saliendo....");
@@ -98,7 +98,7 @@ function listar() {
         huesped = habitacion.huesped;
     }
     console.log(
-      `Número: ${habitacion.numero} | Tipo: ${habitacion.tipo.toUpperCase()} | Precio por Noche: Q. ${habitacion.precioNoche} | Estado: ${habitacion.estado.toUpperCase()} | Estado: ${huesped.toUpperCase()}`
+      `Número: ${habitacion.numero} | Tipo: ${habitacion.tipo.toUpperCase()} | Precio por Noche: Q. ${habitacion.precioNoche} | Estado: ${habitacion.estado.toUpperCase()} | Huésped: ${huesped.toUpperCase()}`
     );
   });
 }
@@ -122,7 +122,7 @@ async function buscar() {
     }
     console.log("************* Habitación encontrada *************");
     console.log(
-      `Número: ${habitacionBuscada.numero} | Tipo: ${habitacionBuscada.tipo.toUpperCase()} | Precio por Noche: Q. ${habitacionBuscada.precioNoche} | Estado: ${habitacionBuscada.estado.toUpperCase()} | Estado: ${huesped.toUpperCase()}`
+      `Número: ${habitacionBuscada.numero} | Tipo: ${habitacionBuscada.tipo.toUpperCase()} | Precio por Noche: Q. ${habitacionBuscada.precioNoche} | Estado: ${habitacionBuscada.estado.toUpperCase()} | Huésped: ${huesped.toUpperCase()}`
     );
   } else {
     console.log("Habitación no encontrada...");
@@ -143,6 +143,22 @@ async function actualizar() {
     let nuevoEstado = prompt("Ingrese el nuevo estado:");
     habitacionBuscada.estado = nuevoEstado;
     console.log("Estado actualizado: " + habitacionBuscada.numero);
+  } else {
+    console.log("Habitación no encontrada...");
+  }
+}
+
+// Función para eliminar habitaciones por número
+function eliminar() {
+  let numero = parseInt(prompt("Número de habitación a eliminar:"));
+
+  let indice = habitaciones.findIndex((habitacion) => {
+    return habitacion.numero === numero;
+  });
+
+  if (indice !== -1) {
+    habitaciones.splice(indice, 1);
+    console.log("Habitación eliminada: " + numero);
   } else {
     console.log("Habitación no encontrada...");
   }

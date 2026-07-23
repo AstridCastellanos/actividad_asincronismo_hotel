@@ -23,7 +23,7 @@ async function menu() {
         listar();
         break;
       case "3":
-       
+        await buscar();
         break;
       case "4":
        
@@ -99,11 +99,34 @@ function listar() {
         huesped = habitacion.huesped;
     }
     console.log(
-      `Número: ${habitacion.numero} | Tipo: ${habitacion.tipo.toUpperCase()} | Precio por Noche: Q. ${habitacion.precioNoche} | Estado: ${habitacion.estado.toUpperCase()} | Estado: ${huesped.toUpperCase()}`,
+      `Número: ${habitacion.numero} | Tipo: ${habitacion.tipo.toUpperCase()} | Precio por Noche: Q. ${habitacion.precioNoche} | Estado: ${habitacion.estado.toUpperCase()} | Estado: ${huesped.toUpperCase()}`
     );
   });
 }
 
+//Función para buscar habitaciones por número
+async function buscar() {
+  let numero = parseInt(prompt("Número de habitación a buscar:"));
+  console.log("Buscando en base de datos...");
 
+  await tiempoDeEspera(3000);
 
+  let habitacionBuscada = habitaciones.find((habitacion) => {
+    return habitacion.numero === numero;
+  });
+  if (habitacionBuscada) {
+    let huesped;
+    if(habitacionBuscada.huesped == ""){
+        huesped = "N/A";
+    }else {
+        huesped = habitacionBuscada.huesped;
+    }
+    console.log("************* Habitación encontrada *************");
+    console.log(
+      `Número: ${habitacionBuscada.numero} | Tipo: ${habitacionBuscada.tipo.toUpperCase()} | Precio por Noche: Q. ${habitacionBuscada.precioNoche} | Estado: ${habitacionBuscada.estado.toUpperCase()} | Estado: ${huesped.toUpperCase()}`
+    );
+  } else {
+    console.log("Habitación no encontrada...");
+  }
+}
 menu();

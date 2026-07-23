@@ -17,7 +17,7 @@ async function menu() {
  
     switch (opcion) {
       case "1":
-        
+        await registrar();
         break;
       case "2":
        
@@ -42,6 +42,33 @@ async function menu() {
 
 
 menu();
+
+async function registrar() {
+    let tipos = ["Sencilla","Doble","Suite"];
+    let estados = ["Libre","Ocupada","Limpieza"];
+
+
+    let numero = Number(prompt("Número de la habitación:"));
+    let tipo = subMenu(tipos);
+    let precioNoche = parseFloat(prompt("Precio por noche:"));
+    let estado = subMenu(estados);
+    let huesped = prompt("Nombre del huésped (vacío si está libre):");
+
+    let habitacion = {
+        numero,
+        tipo,
+        precioNoche,
+        estado,
+        huesped,
+    };
+
+    console.log("Validando información de la habitación...");
+
+    await tiempoDeEspera(2000);
+
+    habitaciones.push(habitacion);
+    console.log(`Habitación #${numero} registrada!`);
+}
 
 // Función para mostrar y almacenar las opciones multiples
 function subMenu(lista){

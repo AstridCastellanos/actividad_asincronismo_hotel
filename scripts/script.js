@@ -20,7 +20,7 @@ async function menu() {
         await registrar();
         break;
       case "2":
-       
+        listar();
         break;
       case "3":
        
@@ -40,9 +40,28 @@ async function menu() {
     menu();
 }
 
+// Función para mostrar y almacenar las opciones multiples
+function subMenu(lista){
+    let opcion = prompt(
+        `1. ${lista[0]}\n` +
+        `2. ${lista[1]}\n` +
+        `3. ${lista[2]}\n`
+    );
 
-menu();
+    switch (opcion) {
+        case "1":
+            return lista[0];
+        case "2":
+            return lista[1];
+        case "3":
+            return lista[2];
+        default:
+            console.log("Opción no válida!");
+            return subMenu(lista);
+    }
+}
 
+//Función para registrar nuevas habitaciones
 async function registrar() {
     let tipos = ["Sencilla","Doble","Suite"];
     let estados = ["Libre","Ocupada","Limpieza"];
@@ -70,23 +89,21 @@ async function registrar() {
     console.log(`Habitación #${numero} registrada!`);
 }
 
-// Función para mostrar y almacenar las opciones multiples
-function subMenu(lista){
-    let opcion = prompt(
-        `1. ${lista[0]}\n` +
-        `2. ${lista[1]}\n` +
-        `3. ${lista[2]}\n`
-    );
-
-    switch (opcion) {
-        case "1":
-            return lista[0];
-        case "2":
-            return lista[1];
-        case "3":
-            return lista[2];
-        default:
-            console.log("Opción no válida!");
-            return subMenu(lista);
+function listar() {
+  console.log("************** Habitaciones **************");
+  habitaciones.forEach((habitacion) => {
+    let huesped;
+    if(habitacion.huesped == ""){
+        huesped = "N/A";
+    }else {
+        huesped = habitacion.huesped;
     }
+    console.log(
+      `Número: ${habitacion.numero} | Tipo: ${habitacion.tipo.toUpperCase()} | Precio por Noche: Q. ${habitacion.precioNoche} | Estado: ${habitacion.estado.toUpperCase()} | Estado: ${huesped.toUpperCase()}`,
+    );
+  });
 }
+
+
+
+menu();

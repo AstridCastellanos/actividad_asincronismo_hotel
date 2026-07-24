@@ -47,7 +47,8 @@ function subMenu(lista){
     let opcion = prompt(
         `1. ${lista[0]}\n` +
         `2. ${lista[1]}\n` +
-        `3. ${lista[2]}\n`
+        `3. ${lista[2]}\n` +
+        `\nElija un opción`
     );
 
     switch (opcion) {

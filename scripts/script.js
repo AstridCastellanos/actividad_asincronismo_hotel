@@ -102,7 +102,7 @@ function listar() {
         huesped = habitacion.huesped;
     }
     console.log(
-      `Número: ${habitacion.numero} | Tipo: ${habitacion.tipo.toUpperCase()} | Precio por Noche: Q. ${habitacion.precioNoche} | Estado: ${habitacion.estado.toUpperCase()} | Huésped: ${huesped.toUpperCase()}`
+      `NÚMERO: ${habitacion.numero} | TIPO: ${habitacion.tipo.toUpperCase()} | PRECIO POR NOCHE: Q. ${habitacion.precioNoche} | ESTADO: ${habitacion.estado.toUpperCase()} | HUÉSPED: ${huesped.toUpperCase()}`
     );
   });
 }
@@ -126,7 +126,7 @@ async function buscar() {
     }
     console.log("************* Habitación encontrada *************");
     console.log(
-      `Número: ${habitacionBuscada.numero} | Tipo: ${habitacionBuscada.tipo.toUpperCase()} | Precio por Noche: Q. ${habitacionBuscada.precioNoche} | Estado: ${habitacionBuscada.estado.toUpperCase()} | Huésped: ${huesped.toUpperCase()}`
+      `NÚMERO: ${habitacionBuscada.numero} | TIPO: ${habitacionBuscada.tipo.toUpperCase()} | PRECIO POR NOCHE: Q. ${habitacionBuscada.precioNoche} | ESTADO: ${habitacionBuscada.estado.toUpperCase()} | HUÉSPED: ${huesped.toUpperCase()}`
     );
   } else {
     console.log("Habitación no encontrada...");

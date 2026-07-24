@@ -66,12 +66,14 @@ function subMenu(lista){
 
 //Función para registrar nuevas habitaciones
 async function registrar() {
-
-    let numero = Number(prompt("Número de la habitación:"));
+    let huesped = "";
+    let numero = parseInt(prompt("Número de la habitación:"));
     let tipo = subMenu(tipos);
     let precioNoche = parseFloat(prompt("Precio por noche:"));
     let estado = subMenu(estados);
-    let huesped = prompt("Nombre del huésped (vacío si está libre):");
+    if (estado === "Ocupada"){
+        huesped = prompt("Nombre del huésped:");
+    }
 
     let habitacion = {
         numero,
@@ -86,9 +88,10 @@ async function registrar() {
     await tiempoDeEspera(2000);
 
     habitaciones.push(habitacion);
-    console.log(`Habitación #${numero} registrada!`);
+    console.log(`Habitación No.${numero} registrada!`);
 }
 
+//Función para listar los datos de todas las habitaciones almacenadas
 function listar() {
   console.log("************** Habitaciones **************");
   habitaciones.forEach((habitacion) => {
@@ -132,21 +135,32 @@ async function buscar() {
 
 //Función para actualizar estado de una habitación
 async function actualizar() {
-  let numero = parseInt(prompt("Número de habitación a buscar:"));
-  console.log("Buscando en base de datos...");
-
-  await tiempoDeEspera(3000);
-
-  let habitacionBuscada = habitaciones.find((habitacion) => {
-    return habitacion.numero === numero;
-  });
-  if (habitacionBuscada) {
-    let nuevoEstado = prompt("Ingrese el nuevo estado:");
-    habitacionBuscada.estado = nuevoEstado;
-    console.log("Estado actualizado: " + habitacionBuscada.numero);
-  } else {
-    console.log("Habitación no encontrada...");
-  }
+    let numero = parseInt(prompt("Número de habitación a buscar:"));
+    console.log("Buscando en base de datos...");
+  
+    await tiempoDeEspera(3000);
+  
+    let habitacionBuscada = habitaciones.find((habitacion) => {
+      return habitacion.numero === numero;
+    });
+    let huesped = habitacionBuscada.huesped;
+  
+    if (habitacionBuscada) {
+      let nuevoEstado = subMenu(estados);
+      habitacionBuscada.estado = nuevoEstado;
+  
+      //Validar que si el nuevo estado es Ocupada y solicita ingresar un huesped si el campo está vacío
+      if (nuevoEstado === "Ocupada"){
+          if (huesped === ""){
+              habitacionBuscada.huesped = prompt("Nombre del huésped:");
+          }
+      }else {
+          habitacionBuscada.huesped = "";
+      }
+      console.log("Estado actualizado: " + habitacionBuscada.numero);
+    } else {
+      console.log("Habitación no encontrada...");
+    }
 }
 
 // Función para eliminar habitaciones por número

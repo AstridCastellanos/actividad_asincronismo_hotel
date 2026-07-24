@@ -78,7 +78,9 @@ async function registrar() {
     } while (esNumero(precioNoche) === -1);
     let estado = subMenu(estados);
     if (estado === "Ocupada"){
-        huesped = prompt("Nombre del huésped:");
+        do {
+            huesped = prompt("Nombre del huésped:");
+        } while (estaVacio(huesped) === -1);
     }
 
     let habitacion = {
@@ -195,6 +197,15 @@ function eliminar() {
 function esNumero(numero){
     if (isNaN(numero)) {
         console.log("Debe ingresar un número");
+        return -1;
+    }
+    return 1;
+}
+
+//Función para validar que las entradas de texto no queden vacías
+function estaVacio(dato){
+    if (dato === "") {
+        console.log("El dato no puede quedar en blanco");
         return -1;
     }
     return 1;

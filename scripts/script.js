@@ -67,9 +67,15 @@ function subMenu(lista){
 //Función para registrar nuevas habitaciones
 async function registrar() {
     let huesped = "";
-    let numero = parseInt(prompt("Número de la habitación:"));
+    let numero = 0;
+    let precioNoche = 0;
+    do {
+        numero = parseInt(prompt("Número de la habitación:"));
+    } while (esNumero(numero) === -1);
     let tipo = subMenu(tipos);
-    let precioNoche = parseFloat(prompt("Precio por noche:"));
+    do {
+        precioNoche = parseFloat(prompt("Precio por noche:"));
+    } while (esNumero(precioNoche) === -1);
     let estado = subMenu(estados);
     if (estado === "Ocupada"){
         huesped = prompt("Nombre del huésped:");
@@ -183,6 +189,15 @@ function eliminar() {
   } else {
     console.log("Habitación no encontrada...");
   }
+}
+
+//Función para validar que ingresen un número válido y que no quede en blanco
+function esNumero(numero){
+    if (isNaN(numero)) {
+        console.log("Debe ingresar un número");
+        return -1;
+    }
+    return 1;
 }
 
 menu();

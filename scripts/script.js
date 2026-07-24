@@ -1,0 +1,273 @@
+let habitaciones = [];
+let tipos = ["Sencilla","Doble","Suite"];
+let estados = ["Libre","Ocupada","Limpieza"];
+
+function tiempoDeEspera(ms) {
+  return new Promise((resolve, reject) => setTimeout(resolve, ms));
+}
+
+async function menu() {
+    let opcion = prompt(
+        "**************** HOTEL ALEGRÍA ****************\n\n" +
+        "1. Registrar nueva habitación\n" +
+        "2. Listar habitaciones\n" +
+        "3. Buscar habitación por número\n" +
+        "4. Cambiar estado de una habitación\n" +
+        "5. Eliminar habitación\n" +
+        "6. Salir",
+    );
+ 
+    switch (opcion) {
+      case "1":
+        await registrar();
+        break;
+      case "2":
+        listar();
+        break;
+      case "3":
+        await buscar();
+        break;
+      case "4":
+       await actualizar();
+        break;
+      case "5":
+        eliminar();
+        break;
+      case "6":
+        console.log("Saliendo....");
+        return;
+      default:
+        console.log("Opción no válida!");
+    }
+    menu();
+}
+
+// Función para mostrar y almacenar las opciones multiples
+function subMenu(lista){
+    let opcion = prompt(
+        `1. ${lista[0]}\n` +
+        `2. ${lista[1]}\n` +
+        `3. ${lista[2]}\n` +
+        `\nElija una opción`
+    );
+
+    switch (opcion) {
+        case "1":
+            return lista[0];
+        case "2":
+            return lista[1];
+        case "3":
+            return lista[2];
+        default:
+            console.log("Opción no válida!");
+            return subMenu(lista);
+    }
+}
+
+//Función para registrar nuevas habitaciones
+async function registrar() {
+    let huesped = "";
+    let numero = 0;
+    let precioNoche = 0;
+    do {
+        numero = parseInt(prompt("Número de la habitación:"));
+        
+    } while (esNumero(numero) === -1);
+
+    let existe = habitaciones.some(habitacion => habitacion.numero === numero);
+
+    if (existe) {
+        console.log("Ya existe una habitación con ese número.");
+        return;
+    }
+
+    let tipo = subMenu(tipos);
+    do {
+        precioNoche = parseFloat(prompt("Precio por noche:"));
+    } while (esFloat(precioNoche) === -1);
+    let estado = subMenu(estados);
+    if (estado === "Ocupada"){
+        do {
+            huesped = prompt("Nombre del huésped:");
+        } while (estaVacio(huesped) === -1);
+    }
+
+    let habitacion = {
+        numero,
+        tipo,
+        precioNoche,
+        estado,
+        huesped,
+    };
+
+    console.log("Validando información de la habitación...");
+
+    await tiempoDeEspera(2000);
+
+    habitaciones.push(habitacion);
+    console.log(`Habitación No.${numero} registrada correctamente!`);
+}
+
+//Función para listar los datos de todas las habitaciones almacenadas
+function listar() {
+    console.log("************** Habitaciones **************");
+
+    //Validar si hay habitaciones antes de solicitar datos
+    if (habitaciones.length === 0){
+        console.log("No hay habitaciones registradas.");
+        return;
+    }
+
+    habitaciones.forEach((habitacion) => {
+        let huesped;
+        if(habitacion.huesped === ""){
+            huesped = "N/A";
+        }else {
+            huesped = habitacion.huesped;
+        }
+        console.log(
+        `NÚMERO: ${habitacion.numero} | TIPO: ${habitacion.tipo.toUpperCase()} | PRECIO POR NOCHE: Q. ${habitacion.precioNoche} | ESTADO: ${habitacion.estado.toUpperCase()} | HUÉSPED: ${huesped.toUpperCase()}`
+        );
+    });
+}
+
+//Función para buscar habitaciones por número
+async function buscar() {
+    //Validar si hay habitaciones antes de solicitar datos
+    if (habitaciones.length === 0){
+        console.log("No hay habitaciones registradas.");
+        return;
+    }
+
+    let numero = 0;
+    do {
+        numero = parseInt(prompt("Número de habitación a buscar:"));
+    } while (esNumero(numero) === -1)
+    console.log("Consultando base de datos del hotel");
+
+    await tiempoDeEspera(2000);
+
+    let habitacionBuscada = habitaciones.find((habitacion) => {
+        return habitacion.numero === numero;
+    });
+
+    if (habitacionBuscada) {
+        let huesped;
+        if(habitacionBuscada.huesped === ""){
+            huesped = "N/A";
+        }else {
+            huesped = habitacionBuscada.huesped;
+        }
+
+        console.log("************* Habitación encontrada *************");
+        console.log(
+            `NÚMERO: ${habitacionBuscada.numero} | TIPO: ${habitacionBuscada.tipo.toUpperCase()} | PRECIO POR NOCHE: Q. ${habitacionBuscada.precioNoche} | ESTADO: ${habitacionBuscada.estado.toUpperCase()} | HUÉSPED: ${huesped.toUpperCase()}`
+        );
+    } else {
+        console.log("Habitación no encontrada...");
+    }
+}
+
+//Función para actualizar estado de una habitación
+async function actualizar() {
+    //Validar si hay habitaciones antes de solicitar datos
+    if (habitaciones.length === 0){
+        console.log("No hay habitaciones registradas.");
+        return;
+    }
+
+    let numero = 0;
+    do {
+        numero = parseInt(prompt("Número de habitación a actualizar:"));
+    } while (esNumero(numero) === -1)
+    console.log("Esperando al personal del hotel...");
+  
+    await tiempoDeEspera(3000);
+  
+    let habitacionBuscada = habitaciones.find((habitacion) => {
+      return habitacion.numero === numero;
+    });
+    
+  
+    if (habitacionBuscada) {
+        let huesped = habitacionBuscada.huesped;
+        let nuevoEstado = subMenu(estados);
+        habitacionBuscada.estado = nuevoEstado;
+    
+        //Validar que si el nuevo estado es Ocupada y solicita ingresar un huesped si el campo está vacío
+        if (nuevoEstado === "Ocupada"){
+            if (huesped === ""){
+                do {
+                    huesped = prompt("Nombre del huésped:");
+                } while (estaVacio(huesped) === -1);
+                habitacionBuscada.huesped = huesped;
+            }
+        }else {
+            habitacionBuscada.huesped = "";
+        }
+        console.log("Estado actualizado: " + habitacionBuscada.numero);
+    } else {
+        console.log("Habitación no encontrada...");
+    }
+}
+
+// Función para eliminar habitaciones por número
+function eliminar() {
+    //Validar si hay habitaciones antes de solicitar datos
+    if (habitaciones.length === 0){
+        console.log("No hay habitaciones registradas.");
+        return;
+    }
+    let numero = 0;
+    do {
+        numero = parseInt(prompt("Número de habitación a buscar:"));
+    } while (esNumero(numero) === -1)
+
+    let indice = habitaciones.findIndex((habitacion) => {
+        return habitacion.numero === numero;
+    });
+
+    if (indice !== -1) {
+        habitaciones.splice(indice, 1);
+        console.log("Habitación eliminada: " + numero);
+    } else {
+        console.log("Habitación no encontrada...");
+    }
+}
+
+//Función para validar que ingresen un número válido y que no quede en blanco
+function esNumero(numero){
+    if (!Number.isInteger(numero)) {
+        console.log("Debe ingresar un número");
+        return -1;
+    }
+    if (numero <= 0){
+        console.log("Debe ingresar un número válido");
+        return -1;
+    }
+    return 1;
+}
+
+//Función para validar que ingresen un precio válido y que no quede en blanco
+function esFloat(numero){
+    if (isNaN(numero)) {
+        console.log("Debe ingresar un número");
+        return -1;
+    }
+    if (numero <= 0){
+        console.log("Debe ingresar un número válido");
+        return -1;
+    }
+    return 1;
+}
+
+//Función para validar que las entradas de texto no queden vacías
+function estaVacio(dato){
+    if (dato === "") {
+        console.log("El dato no puede quedar en blanco");
+        return -1;
+    }
+    return 1;
+}
+
+menu();

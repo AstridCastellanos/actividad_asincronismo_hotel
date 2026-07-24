@@ -88,15 +88,21 @@ async function registrar() {
     await tiempoDeEspera(2000);
 
     habitaciones.push(habitacion);
-    console.log(`Habitación No.${numero} registrada!`);
+    console.log(`Habitación No.${numero} registrada correctamente!`);
 }
 
 //Función para listar los datos de todas las habitaciones almacenadas
 function listar() {
   console.log("************** Habitaciones **************");
+
+    if (habitaciones.length === 0) {
+        console.log("No hay habitaciones registradas.");
+        return;
+    }
+
   habitaciones.forEach((habitacion) => {
     let huesped;
-    if(habitacion.huesped == ""){
+    if(habitacion.huesped === ""){
         huesped = "N/A";
     }else {
         huesped = habitacion.huesped;
@@ -110,16 +116,16 @@ function listar() {
 //Función para buscar habitaciones por número
 async function buscar() {
   let numero = parseInt(prompt("Número de habitación a buscar:"));
-  console.log("Buscando en base de datos...");
+  console.log("Consultando base de datos del hotel");
 
-  await tiempoDeEspera(3000);
+  await tiempoDeEspera(2000);
 
   let habitacionBuscada = habitaciones.find((habitacion) => {
     return habitacion.numero === numero;
   });
   if (habitacionBuscada) {
     let huesped;
-    if(habitacionBuscada.huesped == ""){
+    if(habitacionBuscada.huesped === ""){
         huesped = "N/A";
     }else {
         huesped = habitacionBuscada.huesped;
@@ -136,7 +142,7 @@ async function buscar() {
 //Función para actualizar estado de una habitación
 async function actualizar() {
     let numero = parseInt(prompt("Número de habitación a buscar:"));
-    console.log("Buscando en base de datos...");
+    console.log("Esperando al personal del hotel...");
   
     await tiempoDeEspera(3000);
   
